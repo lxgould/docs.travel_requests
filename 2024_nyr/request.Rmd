@@ -1,0 +1,82 @@
+---
+title: "NYR 2024 - Travel Request"
+author: "Angela Pitera"
+date: "`r Sys.Date()`"
+output: html_document
+#runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(readxl)
+library(reactable)
+```
+
+```{r get_data}
+raw <- read_xlsx("cost_estimate.xlsx") 
+
+raw <- raw[!grepl("^total$", raw$Item, ignore.case = TRUE), ]
+
+total_cost_str <- sprintf("$%.2f", sum(raw$Estimate))
+```
+
+
+## Summary
+
+I am requesting travel, lodging and other associated expenses for attending the __New York R__ conference.  It will be held May 15^th^ through the 17^th^ (week 20) in New York, New York.
+
+The estimate cost is `r total_cost_str` ([details below](#cost_table))
+
+This conference is a very good opportunity for SPG to learn about new developments in R/shiny and to network with other data practitioners. 
+
+## The Conference
+
+Here’s a brief [abstract](https://rstats.ai/about) that describes the conference:
+
+>The R Conference in New York, Washington D.C., and soon Dublin, Ireland, were created to foster the local R communities and serve as fun gathering places where people can learn from their peers in an inviting setting. The R Conference hosts one of the most elite gatherings of data scientists and data professionals who come together to explore, share, and inspire ideas, and to promote the growth of open source ideals...
+
+A summary of the 2023 conference can be found at [https://www.landeranalytics.com/post/nyr-2023-recap](https://www.landeranalytics.com/post/nyr-2023-recap)
+
+## What Does It Mean To SPG?
+
+**SPG's commitment to implementing Posit Team in 2024 highlights our investment in the R language**.   SGRM, DeepLearning and multiple QC processes all run under R.  We also have developed several packages to handle SQL and API interactions
+
+Active R developers include myself, Angela, Jan-Marie, Yijian, Youping, Vance, Richard, Kent, Mauricio, and possibly others.  Users across SPG, HPD and Smithfield Corporate use R/shiny apps developed by SPG. As our expertise in data analysis and data communication becomes more recognized, there will likely be more demand for our skills.  And as our user base grows, our development efforts will need to be more professional including:
+
+1. Version control (git and GitHub)
+1. Code maintainability (coding standards and modularity)
+1. Testing (unit testing, integration testing, load testing)
+1. Efficient workflows and collaboration
+
+Attending this conference will help keep us up to date with the latest developments in using R for statistical analyses, reporting and data management. Networking with other R enthusiasts from other backgrounds and industries will foster a vibrant community of innovative R based solutions..
+
+## Goals and Objectives
+
+Attending a conference can be expensive, so we need to have explicit goals that will ensure we accomplish a positive benefit for SPG.
+
+1. Trade contact information with at least two people who could potentially be resources for our R development  
+1. Learn at least one shiny skill for rapid development of web apps
+1. Identify and explore at least one R package for data cleaning that is not common in SPG
+1. For each speaker, write down one point of their talk that is relevant to SPG  
+1. Meet at least one person who has heard of Smithfield Foods  
+
+## Cost {#cost_table}
+
+```{r cost_table}
+raw |> 
+  reactable(columns = list(
+              Item = colDef(footer = "Total"),
+              Estimate = colDef(format = colFormat(currency = "USD", separators = TRUE),
+                                footer = function(values) sprintf("$%.2f", sum(values)))
+            ),
+            fullWidth = TRUE,
+            defaultColDef = colDef(footerStyle = list(fontWeight = "bold", textAlign = "right", borderTop = "thin solid"))
+  )
+  
+
+```
+
+
+***
+sent to ygu@smithfield.com on 2022-05-24 12:39:00 EST
